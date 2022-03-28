@@ -29,6 +29,15 @@ export interface RegisterComponentOptions {
      */
     wrapperClass?: string;
 
+    /**
+     * Flag to indicate that the component's children/subtree should not be traversed and processed
+     * in the usual way (i.e. each child component getting wrapped).
+     * Components, which manage their subtree in a special way, should set this flag to true.
+     * Note, that when this flag is set, the component is responsible for wrapping its children
+     * as appropriate.
+     */
+    preventSubtreeProcessing?: boolean;
+
 }
 
 export interface BaseComponentProps {
