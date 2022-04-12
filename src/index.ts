@@ -9,6 +9,10 @@ export const YoStack = {
 
 };
 
+export interface AppSetupContext {
+    registerComponent: (typeId: string, component: Function, options?: RegisterComponentOptions) => void;
+}
+
 export interface RegisterComponentOptions {
 
     /**
