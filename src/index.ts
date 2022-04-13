@@ -1,18 +1,13 @@
-const _w = window as any;
-const yostack = _w._YoStack = _w._YoStack || { components: [] };
-
-export const YoStack = {
-
-    registerComponent: (typeId: string, component: Function, options?: RegisterComponentOptions) => {
-        yostack.components.push({ typeId, component, options });
-    }
-
-};
-
+/**
+ * An app setup context object is passed to each app module's `init` function.
+ */
 export interface AppSetupContext {
     registerComponent: (typeId: string, component: Function, options?: RegisterComponentOptions) => void;
 }
 
+/**
+ * Options that can be provided when registering a component.
+ */
 export interface RegisterComponentOptions {
 
     /**
@@ -41,6 +36,11 @@ export interface RegisterComponentOptions {
      * as appropriate.
      */
     preventSubtreeProcessing?: boolean;
+
+    /**
+     * Whether the component should be rendered client-side only, i.e. not server-side.
+     */
+    clientOnly?: boolean;
 
 }
 
