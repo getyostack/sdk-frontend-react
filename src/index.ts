@@ -2,7 +2,8 @@
  * An app setup context object is passed to each app module's `init` function.
  */
 export interface AppSetupContext {
-    registerComponent: (typeId: string, component: Function, options?: RegisterComponentOptions) => void;
+    registerComponent: (typeId: string, component: Function, options?: RegisterComponentOptions) => boolean;
+    registerAudienceCriteria(info: AudienceCriteriaInfo): boolean;
 }
 
 /**
@@ -56,4 +57,19 @@ export interface BaseComponentProps {
         children?: any;
         getSlotContents?: (slotId: string) => any[]|null;
     }
+}
+
+export interface AudienceCriteriaInfo {
+    id: string;
+    evaluateFn: AudienceCriteriaEvaluatorFn;
+    requiredContext?: string[];
+}
+
+export type AudienceCriteriaEvaluatorFn = (criteria: any, context: AudienceEvaluationContext) => boolean;
+
+export interface AudienceEvaluationContext {
+    user?: any;
+    cart?: any;
+    customEventData?: { [key: string]: string };
+    [key: string]: any;
 }
