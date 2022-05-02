@@ -4,6 +4,7 @@
 export interface AppSetupContext {
     registerComponent: (typeId: string, component: Function, options?: RegisterComponentOptions) => boolean;
     registerAudienceCriteria(info: AudienceCriteriaInfo): boolean;
+    registerDataRequestHandler(dataProviderId: string, handlerFn: DataRequestHandlerFn): boolean;
 }
 
 /**
@@ -59,6 +60,10 @@ export interface BaseComponentProps {
     }
 }
 
+export interface AppContext {
+    settings: any;
+}
+
 export interface AudienceCriteriaInfo {
     id: string;
     evaluateFn: AudienceCriteriaEvaluatorFn;
@@ -66,6 +71,30 @@ export interface AudienceCriteriaInfo {
 }
 
 export type AudienceCriteriaEvaluatorFn = (criteria: any, context: AudienceEvaluationContext) => boolean;
+
+export type DataRequestHandlerFn = (collectionId: string, options: DataRequestOptions, appContext: AppContext) => Promise<DataRequestResult>;
+
+export type DataRequestResult = Array<any> | any | PagedResult;
+
+export interface DataRequestOptions {
+    query?: string;
+    sort?: string;
+    page?: number;
+    pageSize?: number;
+    [x: string]: any;
+}
+
+export interface PagedResult<T=any> {
+    results: T[];
+    page: PagedResultInfo;
+}
+
+export interface PagedResultInfo {
+    currentPage: number; // 1-based
+    totalPages: number;
+    totalCount: number;
+    pageSize: number;
+}
 
 export interface AudienceEvaluationContext {
     user?: any;
