@@ -102,3 +102,25 @@ export interface AudienceEvaluationContext {
     customEventData?: { [key: string]: string };
     [key: string]: any;
 }
+
+export interface ImageComponentConfig {
+    images?: ImageAssetConfig[];
+    responsive?: boolean;
+    lazyLoad?: boolean;
+    ratioBox?: boolean;
+    altText?: string;
+}
+
+export interface ImageAssetConfig {
+    url: string;
+    srcset?: string;
+    sizes?: string;
+    aspectRatio?: number;
+    screens?: ScreenSize[];
+    width?: number;
+    height?: number;
+    altText?: string;
+    contentType?: string;
+}
+
+export type ScreenSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl' | 'xxl';
