@@ -76,8 +76,8 @@ export interface BaseComponentProps {
     }
 }
 
-export interface AppContext {
-    settings: any;
+export interface AppContext<Settings=any> {
+    settings: Settings;
 }
 
 export type AudienceCriteriaEvaluatorFn = (criteria: any, context: AudienceEvaluationContext) => boolean;
