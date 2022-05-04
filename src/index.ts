@@ -82,7 +82,7 @@ export interface AppContext<Settings=any> {
 
 export type AudienceCriteriaEvaluatorFn = (criteria: any, context: AudienceEvaluationContext) => boolean;
 
-export type DataRequestHandlerFn = (collectionId: string, options: DataRequestOptions, appContext: AppContext) => Promise<DataRequestResult>;
+export type DataRequestHandlerFn<S=any> = (collectionId: string, options: DataRequestOptions, appContext: AppContext<S>) => Promise<DataRequestResult>;
 
 export type DataRequestResult = Array<any> | any | PagedResult;
 
