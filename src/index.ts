@@ -1,10 +1,26 @@
+export * from './common-utils';
+export * from './audience';
+
 /**
  * An app setup context object is passed to each app module's `init` function.
  */
 export interface AppSetupContext {
-    registerComponent: (typeId: string, component: Function, options?: RegisterComponentOptions) => boolean;
-    registerAudienceCriteria(info: AudienceCriteriaInfo): boolean;
-    registerDataRequestHandler(dataProviderId: string, handlerFn: DataRequestHandlerFn): boolean;
+    registerComponent(
+        typeId: string,
+        component: Function,
+        options?: RegisterComponentOptions
+    ): boolean;
+
+    registerAudienceCriteriaEvaluator(
+        audienceCriteriaId: string,
+        evaluateFn: AudienceCriteriaEvaluatorFn,
+        requiredContext?: string[]
+    ): boolean;
+
+    registerDataRequestHandler(
+        dataProviderId: string,
+        handlerFn: DataRequestHandlerFn
+    ): boolean;
 }
 
 /**
@@ -62,12 +78,6 @@ export interface BaseComponentProps {
 
 export interface AppContext {
     settings: any;
-}
-
-export interface AudienceCriteriaInfo {
-    id: string;
-    evaluateFn: AudienceCriteriaEvaluatorFn;
-    requiredContext?: string[];
 }
 
 export type AudienceCriteriaEvaluatorFn = (criteria: any, context: AudienceEvaluationContext) => boolean;
