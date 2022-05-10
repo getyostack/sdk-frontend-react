@@ -82,17 +82,9 @@ export interface AppContext<Settings=any> {
 
 export type AudienceCriteriaEvaluatorFn = (criteria: any, context: AudienceEvaluationContext) => boolean;
 
-export type DataRequestHandlerFn<S=any> = (collectionId: string, options: DataRequestOptions, appContext: AppContext<S>) => Promise<DataRequestResult>;
+export type DataRequestHandlerFn<Settings=any, Options=any> = (collectionId: string, options: Options, appContext: AppContext<Settings>) => Promise<DataRequestResult>;
 
 export type DataRequestResult = Array<any> | any | PagedResult;
-
-export interface DataRequestOptions {
-    query?: string;
-    sort?: string;
-    page?: number;
-    pageSize?: number;
-    [x: string]: any;
-}
 
 export interface PagedResult<T=any> {
     results: T[];
