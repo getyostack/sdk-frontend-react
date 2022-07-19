@@ -4,16 +4,17 @@ import typescript from "@rollup/plugin-typescript";
 import dts from "rollup-plugin-dts";
 import { terser } from "rollup-plugin-terser";
 import peerDepsExternal from 'rollup-plugin-peer-deps-external';
+import multi from '@rollup/plugin-multi-entry';
 
 const packageJson = require("./package.json");
 
 export default [
     {
-        input: "src/index.ts",
+        input: ["src/**/*.ts", "src/**/*.tsx"],
         output: [
             {
                 file: packageJson.main,
-                format: "cjs",
+                format: "esm",
                 sourcemap: true,
             }
         ],
@@ -23,11 +24,12 @@ export default [
             commonjs(),
             typescript({ tsconfig: "./tsconfig.json" }),
             terser(),
+            multi(),
         ],
     },
     {
-        input: "dist/dts/index.d.ts",
+        input: ["dist/dts/**/*.ts"],
         output: [{ file: "dist/index.d.ts", format: "esm" }],
-        plugins: [dts()]
+        plugins: [dts(), multi()]
     },
 ];
