@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {ImageComponentConfig} from "../../media/image-component-config.interface";
 import {MediaBreakpoints} from "../../media/media-breakpoints";
 import {ImageAssetConfig} from "../../media/image-asset-config.interface";
@@ -14,16 +14,31 @@ export const Image: React.FunctionComponent<ImageComponentConfig> = (props) => {
 
     const siteInfo = useContext(SiteContext);
 
-    const mainConfig = props;
+    /*
+     Note: We use the mounted state to conditionally add the 'lazyload' class in order to prevent a hydration
+     mismatch error, which occurs if the 'lazyload' class is applied server-side and then lazysizes processes
+     the image element client-side (resulting in 'lazyloaded' class to be added) before the React component
+     has been hydrated.
+     By only adding the 'lazyload' class after the component has been mounted, we guarantee that the first render
+     won't trigger lazysizes to apply any load behavior. The downside of this approach is that lazysizes cannot
+     load images until the component has been mounted (e.g. hydrated).
+    */
+    const [mounted, setMounted] = useState<boolean>(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
+
     let images = props.images || [];
 
     if (!images?.length) {
         return null;
     }
 
+    const lazyLoad = props.lazyLoad !== false;
     const altText = props.altText || '';
     const imageInfos: any[] = [];
-    const uniqueRatioBoxClass = `ys-ratio-box-${props.uniqueRatioBoxClass || hashCode(JSON.stringify(mainConfig.images))}`;
+    const uniqueRatioBoxClass = `ys-ratio-box-${props.uniqueRatioBoxClass || hashCode(JSON.stringify(props.images))}`;
     const ratioBoxStyles: string[] = [];
     const breakpoints: MediaBreakpoints = siteInfo.breakpoints;
     const imageInfoByScreenMap: {[key: string]: any} = {
@@ -51,7 +66,7 @@ export const Image: React.FunctionComponent<ImageComponentConfig> = (props) => {
         }
     });
 
-    const renderRatioBox = mainConfig.ratioBox !== false && !imageInfos.find(info => !info.aspectRatio); // require all images to have aspect ratio
+    const renderRatioBox = props.ratioBox !== false && !imageInfos.find(info => !info.aspectRatio); // require all images to have aspect ratio
     let content;
 
     if (imageInfos.length === 1) {
@@ -119,7 +134,6 @@ export const Image: React.FunctionComponent<ImageComponentConfig> = (props) => {
         const src = getSrc(config);
         const width = config.width;
         const height = config.height;
-        const lazyLoad = mainConfig.lazyLoad !== false;
         let aspectRatio = config.aspectRatio;
         let srcset = config.srcset;
 
@@ -146,8 +160,9 @@ export const Image: React.FunctionComponent<ImageComponentConfig> = (props) => {
         const imgElAttrs: any = {
             className: new CssClassBuilder()
                 .add('ro-image', props.className)
-                .addIf(mainConfig.responsive, 'img-fluid')
-                .addIf(lazyLoad, 'lazyload')
+                .addIf(props.responsive, 'img-fluid')
+                // only add 'lazyload' class after component was mounted to prevent hydration mismatch errors
+                .addIf(lazyLoad && mounted, 'lazyload')
                 .toString()
         };
 
@@ -161,11 +176,11 @@ export const Image: React.FunctionComponent<ImageComponentConfig> = (props) => {
             imgElAttrs['data-sizes'] = config.sizes || 'auto';
         } else {
             imgElAttrs.src = src;
-            imgElAttrs.srcset = srcset;
+            imgElAttrs.srcSet = srcset;
             imgElAttrs.sizes = config.sizes;
         }
 
-        if (!mainConfig.responsive) {
+        if (!props.responsive) {
             imgElAttrs.width = width;
             imgElAttrs.height = height;
         }
