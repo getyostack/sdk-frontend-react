@@ -186,7 +186,7 @@ export const Image: React.FunctionComponent<ImageComponentConfig> = (props) => {
         }
 
         if (!aspectRatio && width && height) {
-            aspectRatio = Math.round((height / width * 100) * 100.0) / 100.0; // round to 2 decimal places
+            aspectRatio = Math.round((height / width * 100) * 100.0) / 100.0;
         }
 
         return {
