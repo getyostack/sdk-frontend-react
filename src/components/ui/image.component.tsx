@@ -2,7 +2,7 @@ import React, {useContext, useEffect, useState} from 'react';
 import {ImageComponentConfig} from "../../media/image-component-config.interface";
 import {MediaBreakpoints} from "../../media/media-breakpoints";
 import {ImageAssetConfig} from "../../media/image-asset-config.interface";
-import {hashCode} from "../../utils/common-utils";
+import {hashCode, isObject} from "../../utils/common-utils";
 import {CssClassBuilder} from "../../utils/css-class-builder";
 import {SiteContext} from "../../contexts/site.context";
 import {ConditionalWrapper} from "../support/conditional-wrapper.component";
@@ -31,7 +31,18 @@ export const Image: React.FunctionComponent<ImageComponentConfig> = (props) => {
 
     let images = props.images || [];
 
-    if (!images?.length) {
+    if (!Array.isArray(images)) {
+        // Handle common scenarios where the image data is not in the required format yet (e.g. just an url string)
+        if ('string' === typeof images) {
+            // assume it's an image src url
+            images = [{ url: images }];
+        } else if (isObject(images)) {
+            // assume it's a single image asset config
+            images = [images];
+        }
+    }
+
+    if (!Array.isArray(images) || !images?.length) {
         return null;
     }
 

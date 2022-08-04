@@ -2,7 +2,7 @@ import {BaseComponentProps} from "../component/base-component-props.interface";
 import {ImageAssetConfig} from "./image-asset-config.interface";
 
 export interface ImageComponentConfig extends BaseComponentProps {
-    images?: ImageAssetConfig[];
+    images?: ImageAssetConfig|ImageAssetConfig[]|string;
     responsive?: boolean;
     lazyLoad?: boolean;
     ratioBox?: boolean;
