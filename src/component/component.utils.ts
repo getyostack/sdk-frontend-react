@@ -35,6 +35,25 @@ export const forEachComponentInTree = function(component: Component, fn: (child:
     _traverse(component, null, 0, null);
 }
 
+/**
+ * Asynchronously executes the given function for each tree item in the given tree, including the tree root.
+ *
+ * @param tree The full tree to traverse.
+ * @param fn The function to execute for each tree item. Can return a context to be passed to child tree items.
+ * @param context Optional context to be passed to the item function.
+ */
+export async function forEachComponentInTreeAsync(tree: Component, fn: (treeItem: Component, context?: any) => Promise<any>, context?: any) {
+    context = await fn(tree, context);
+
+    if (tree.slots?.length) {
+        for (const slot of tree.slots) {
+            for (const childItem of slot.items) {
+                await forEachComponentInTreeAsync(childItem, fn, context);
+            }
+        }
+    }
+}
+
 export const findComponentsInTree = function(tree: Component, matchFn: (tree: Component) => boolean): any[] {
     if (!tree) {
         return [];

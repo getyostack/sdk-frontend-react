@@ -28,6 +28,11 @@ export interface Component {
     config?: {[key: string]: any};
 
     /**
+     * Slugs used for URL route matching.
+     */
+    slugs?: string[];
+
+    /**
      * CSS classes.
      */
     cssClass?: string;
