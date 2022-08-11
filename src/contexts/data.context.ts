@@ -1,5 +1,5 @@
 import React from "react";
-import {PagedResultInfo} from "../request/paged-result.interface";
+import {PagedResultInfo} from "../request/paged-result-info.interface";
 
 export const DataContext = React.createContext<IDataContext|null>(null);
 
@@ -44,5 +44,5 @@ export interface DataSet {
     data: any;
     flatData?: {[key: string]: any};
     page?: PagedResultInfo;
-    setPage: (page: number) => void;
+    setPage: (page: number, options?: { append: boolean }) => void;
 }
