@@ -1,12 +1,19 @@
 import {RegisterComponentOptions} from "./register-component-options.interface";
 import {AppContext} from "./app-context.interface";
-import {PagedResult} from "../request/paged-result.interface";
+import {PagedResultInfo} from "../request/paged-result-info.interface";
 import {AudienceCriteriaEvaluatorFn} from "../audience/audience-criteria-info.interface";
 
-export type DataRequestHandlerFn<Settings=any, Options=any> =
-    (collectionId: string, options: Options, appContext: AppContext<Settings>, pagination?: PaginationInfo) => Promise<DataRequestResult>;
+export type DataRequestHandlerFn<Settings=any, Options=any, T=any> = (
+    collectionId: string,
+    options: Options,
+    appContext: AppContext<Settings>,
+    pagination?: PaginationInfo
+) => Promise<DataRequestResult<T>|null|undefined>;
 
-export type DataRequestResult = Array<any> | any | PagedResult;
+export interface DataRequestResult<T> {
+    results: T[];
+    page?: PagedResultInfo;
+}
 
 export interface PaginationInfo {
     page?: number;
