@@ -1,4 +1,5 @@
 import React from "react";
+import {PagedResultInfo} from "../request/paged-result.interface";
 
 export const DataContext = React.createContext<IDataContext|null>(null);
 
@@ -10,7 +11,9 @@ export interface IDataContext {
 
     clone(): IDataContext;
 
-    getDataSets(): any[];
+    getDataSets(): DataSet[];
+
+    getDataSet(name: string): DataSet|undefined;
 
     hasDataSets(): boolean;
 
@@ -34,13 +37,12 @@ export interface IDataContext {
 
     isDataSetLoaded(dataContextId: string, dataContext?: IDataContext | null): boolean;
 
-    getFlattenedData(): { [p: string]: any };
-
-    getSortedDataSets(): any[];
 }
 
 export interface DataSet {
     name: string;
     data: any;
     flatData?: {[key: string]: any};
+    page?: PagedResultInfo;
+    setPage: (page: number) => void;
 }

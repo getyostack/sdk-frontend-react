@@ -4,9 +4,14 @@ import {PagedResult} from "../request/paged-result.interface";
 import {AudienceCriteriaEvaluatorFn} from "../audience/audience-criteria-info.interface";
 
 export type DataRequestHandlerFn<Settings=any, Options=any> =
-    (collectionId: string, options: Options, appContext: AppContext<Settings>) => Promise<DataRequestResult>;
+    (collectionId: string, options: Options, appContext: AppContext<Settings>, pagination?: PaginationInfo) => Promise<DataRequestResult>;
 
 export type DataRequestResult = Array<any> | any | PagedResult;
+
+export interface PaginationInfo {
+    page?: number;
+    pageSize?: number;
+}
 
 /**
  * An app setup context object is passed to each app module's `init` function.
