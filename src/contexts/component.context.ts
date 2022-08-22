@@ -1,6 +1,6 @@
 import React, {ReactElement} from "react";
 import {Component} from "../component/component.interface";
-import {IDataContext} from "./data.context";
+import {DataSet, IDataContext} from "./data.context";
 
 export interface ComponentContextState {
     component: Component;
@@ -32,7 +32,7 @@ export interface ComponentContextState {
         itemAlias: string;
         parentDataContext: IDataContext|null|undefined;
         children: ReactElement|ReactElement[]|null|undefined
-    }) => [ReactElement[], boolean];
+    }) => {elements: ReactElement[], dataLoaded: boolean; dataSet: DataSet|null};
 
     /**
      * Wraps the given children for each item in the given data array. The wrapped children have the

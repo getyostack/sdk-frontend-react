@@ -22,17 +22,17 @@ export interface IDataContext {
      * Returns the data value at the given data path.
      *
      * @param pathToValue The data field path from which to read the data value.
-     * @return [value, isDataLoaded, promise]
+     * @return an object with the data value and other info.
      */
-    getDataValue(pathToValue: string | null | undefined): [any, boolean, Promise<IDataContext>];
+    getDataValue(pathToValue: string | null | undefined): {value: any; dataSet: DataSet|null; dataLoaded: boolean; onLoaded: Promise<IDataContext>};
 
     /**
      * Returns the data array at the given path that can be iterated over.
      *
      * @param pathToArrayField Path to the array field.
-     * @return [array, isDataLoaded]
+     * @return an object with the data array and other info.
      */
-    getDataArray(pathToArrayField: string | null | undefined): [any[], boolean];
+    getDataArray(pathToArrayField: string | null | undefined): {items: any[]; dataLoaded: boolean; dataSet: DataSet|null};
 
     getFlatData(): { [p: string]: any };
 
@@ -46,4 +46,5 @@ export interface DataSet {
     flatData?: {[key: string]: any};
     page?: PagedResultInfo;
     setPage: (page: number, options?: { append: boolean }) => void;
+    loading?: boolean;
 }
