@@ -12,6 +12,10 @@ export function isDate(date: any) {
     return date && date instanceof Date;
 }
 
+export function isPrimitive(val: any) {
+    return val !== Object(val);
+}
+
 export function equalsIgnoreCase(str1: string | null | undefined, str2: string | null | undefined) {
     return (!str1 || !str2) ? str1 === str2 : str1.toLowerCase() === str2.toLowerCase();
 }
@@ -143,4 +147,11 @@ export function arrayContains(a: any[], b: any[]) {
         }
     }
     return match;
+}
+
+export function orderObjectByKeys(unordered: any) {
+    return Object.keys(unordered).sort().reduce((obj: any, key: string) => {
+        obj[key] = unordered[key];
+        return obj;
+    }, {});
 }
