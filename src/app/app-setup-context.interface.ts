@@ -38,6 +38,12 @@ export interface AppSetupContext {
 
     registerDataRequestHandler(
         dataProviderId: string,
-        handlerFn: DataRequestHandlerFn
+        handlerFn: DataRequestHandlerFn,
+        options?: {
+            cache?: {
+                disable?: boolean;
+                defaultTtlMs?: number;
+            }
+        }
     ): boolean;
 }
