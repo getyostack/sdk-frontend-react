@@ -10,9 +10,20 @@ export type DataRequestHandlerFn<Settings=any, Options=any, T=any> = (
     pagination?: PaginationInfo
 ) => Promise<DataRequestResult<T>|null|undefined>;
 
+export interface DataRequestHandlerOptions {
+    cache?: {
+        disable?: boolean;
+        defaultTtlMs?: number;
+    }
+}
+
 export interface DataRequestResult<T> {
     results: T[];
     page?: PagedResultInfo;
+    cache?: {
+        disable?: boolean;
+        ttlMs?: number;
+    };
 }
 
 export interface PaginationInfo {
@@ -39,11 +50,6 @@ export interface AppSetupContext {
     registerDataRequestHandler(
         dataProviderId: string,
         handlerFn: DataRequestHandlerFn,
-        options?: {
-            cache?: {
-                disable?: boolean;
-                defaultTtlMs?: number;
-            }
-        }
+        options?: DataRequestHandlerOptions
     ): boolean;
 }
